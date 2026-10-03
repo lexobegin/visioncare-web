@@ -1,0 +1,37 @@
+# ══════════════════════════════════════════════════════
+# VisionCare AI — Web (React + Vite) — .gitignore
+# ══════════════════════════════════════════════════════
+
+# Dependencias
+node_modules/
+
+# Compilación
+dist/
+dist-ssr/
+*.local
+
+# Variables de entorno (NUNCA subir el .env real)
+.env
+.env.local
+.env.*.local
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# Cobertura
+coverage/
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+
+# IDEs
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.swp
+
+# Temporales de Vite
+.vite/
