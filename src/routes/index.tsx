@@ -7,6 +7,7 @@ import PaginaDashboard from '@/features/dashboard/PaginaDashboard';
 import PaginaHistorial from '@/features/historial/PaginaHistorial';
 import PaginaInstituciones from '@/features/instituciones/PaginaInstituciones';
 import PaginaUsuarios from '@/features/usuarios/PaginaUsuarios';
+import PaginaPerfilesPreferencias from '@/features/perfiles/PaginaPerfilesPreferencias';
 import { RutaProtegida } from './RutaProtegida';
 import { RutaPorRol } from './RutaPorRol';
 
@@ -34,6 +35,14 @@ export default function RouterApp() {
               <Route path="/usuarios" element={<PaginaUsuarios />} />
               <Route path="/instituciones" element={<PaginaInstituciones />} />
               <Route path="/contactos" element={<PaginaContactos />} />
+            </Route>
+
+            {/* Solo ADMIN */}
+            <Route element={<RutaPorRol roles={['ADMIN']} />}>
+              <Route
+                path="/perfiles-preferencias"
+                element={<PaginaPerfilesPreferencias />}
+              />
             </Route>
 
             <Route path="/" element={<Navigate to="/dashboard" replace />} />

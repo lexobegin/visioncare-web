@@ -32,6 +32,7 @@ export type {
   ActualizarPerfilPayload,
   CambiarContrasenaPayload,
   AdminActualizarUsuarioPayload,
+  AdminCrearUsuarioPayload,
 } from './usuario';
 
 // ─── Instituciones ───

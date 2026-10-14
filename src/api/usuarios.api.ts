@@ -7,12 +7,22 @@
 
 import type {
   AdminActualizarUsuarioPayload,
+  AdminCrearUsuarioPayload,
+  ActualizarPerfilPayload,
   CambiarContrasenaPayload,
   ConsultaPaginada,
   RespuestaPaginada,
   Usuario,
 } from '@/types';
 import { api } from './client';
+
+/** CU34 — Crear una cuenta y su perfil (solo ADMIN) */
+export async function crearUsuario(
+  payload: AdminCrearUsuarioPayload,
+): Promise<Usuario> {
+  const { data } = await api.post<Usuario>('/usuarios', payload);
+  return data;
+}
 
 /** CU34 — Listado paginado (ADMIN/INSTITUCION) */
 export async function listarUsuarios(
@@ -27,6 +37,15 @@ export async function listarUsuarios(
 /** CU34/CU35 — Detalle de un usuario */
 export async function obtenerUsuario(id: number): Promise<Usuario> {
   const { data } = await api.get<Usuario>(`/usuarios/${id}`);
+  return data;
+}
+
+/** CU35 — Actualizar los datos de perfil de un usuario (solo ADMIN) */
+export async function actualizarPerfilUsuario(
+  id: number,
+  payload: ActualizarPerfilPayload,
+): Promise<Usuario> {
+  const { data } = await api.patch<Usuario>(`/usuarios/${id}/perfil`, payload);
   return data;
 }
 

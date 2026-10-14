@@ -42,6 +42,8 @@ export function ModalEditarUsuario({
 }: ModalEditarUsuarioProps) {
   const { usuario: usuarioActual, refrescarPerfil } = useAuth();
 
+  const [nombres, setNombres] = useState(usuario.perfil?.nombres ?? '');
+  const [apellidos, setApellidos] = useState(usuario.perfil?.apellidos ?? '');
   const [correo, setCorreo] = useState(usuario.correo);
   const [rol, setRol] = useState<Rol>(usuario.rol);
   const [estado, setEstado] = useState<EstadoUsuario>(usuario.estado);
@@ -63,6 +65,19 @@ export function ModalEditarUsuario({
 
     // ─── Construir payload SOLO con cambios ───
     const payload: AdminActualizarUsuarioPayload = {};
+
+    const nombresLimpios = nombres.trim();
+    if (nombresLimpios.length < 2) {
+      setError('Los nombres deben tener al menos 2 caracteres.');
+      return;
+    }
+    if (nombresLimpios !== (usuario.perfil?.nombres ?? '')) {
+      payload.nombres = nombresLimpios;
+    }
+    const apellidosLimpios = apellidos.trim();
+    if (apellidosLimpios !== (usuario.perfil?.apellidos ?? '')) {
+      payload.apellidos = apellidosLimpios;
+    }
 
     const correoLimpio = correo.trim().toLowerCase();
     if (!correoLimpio) {
@@ -100,13 +115,17 @@ export function ModalEditarUsuario({
       onCerrar={onCerrar}
     >
       <form onSubmit={manejarGuardado} noValidate className="space-y-4">
-        {/* Datos del perfil (informativo, se editan en CU04) */}
-        <div className="rounded-lg bg-slate-50 px-3 py-2.5 text-sm text-slate-600">
-          <span className="font-semibold text-slate-700">
-            {usuario.perfil?.nombres ?? 'Sin perfil'}
-            {usuario.perfil?.apellidos ? ` ${usuario.perfil.apellidos}` : ''}
-          </span>
-          <span className="text-slate-400"> · registrado el perfil asociado</span>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <Input
+            label="Nombres"
+            value={nombres}
+            onChange={(e) => setNombres(e.target.value)}
+          />
+          <Input
+            label="Apellidos"
+            value={apellidos}
+            onChange={(e) => setApellidos(e.target.value)}
+          />
         </div>
 
         {error && (
@@ -126,6 +145,8 @@ export function ModalEditarUsuario({
           <Select
             label="Rol"
             value={rol}
+            disabled={esPerfilPropio}
+            hint={esPerfilPropio ? 'No puedes cambiar tu propio rol.' : undefined}
             onChange={(e) => setRol(e.target.value as Rol)}
           >
             <option value="USUARIO">USUARIO</option>

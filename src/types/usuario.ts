@@ -53,8 +53,20 @@ export interface CambiarContrasenaPayload {
 
 /** PATCH /usuarios/:id (CU34 — solo ADMIN) */
 export interface AdminActualizarUsuarioPayload {
+  nombres?: string;
+  apellidos?: string;
   correo?: string;
   rol?: Rol;
   estado?: EstadoUsuario;
+  id_institucion?: number | null;
+}
+
+/** POST /usuarios (CU34 — solo ADMIN) */
+export interface AdminCrearUsuarioPayload {
+  nombres: string;
+  apellidos?: string;
+  correo: string;
+  contrasena: string;
+  rol: Rol;
   id_institucion?: number | null;
 }

@@ -54,6 +54,12 @@ const ITEMS_MENU: ItemMenu[] = [
     roles: ['ADMIN', 'INSTITUCION'],
   },
   {
+    ruta: '/perfiles-preferencias',
+    etiqueta: 'Perfiles y preferencias',
+    icono: IconoUsuarios,
+    roles: ['ADMIN'],
+  },
+  {
     ruta: '/instituciones',
     etiqueta: 'Instituciones',
     icono: IconoInstitucion,

@@ -22,6 +22,7 @@ import {
   type Columna,
 } from '@/components/comunes/TablaPaginada';
 import { ModalEditarUsuario } from './ModalEditarUsuario';
+import { ModalCrearUsuario } from './ModalCrearUsuario';
 import {
   mensajeDeError,
   type Institucion,
@@ -57,6 +58,7 @@ export default function PaginaUsuarios() {
 
   // Instituciones (para nombres en la tabla + select del modal)
   const [instituciones, setInstituciones] = useState<Institucion[]>([]);
+  const [creando, setCreando] = useState(false);
   const [enEdicion, setEnEdicion] = useState<Usuario | null>(null);
   const [aDesactivar, setADesactivar] = useState<Usuario | null>(null);
   const [procesando, setProcesando] = useState(false);
@@ -76,6 +78,12 @@ export default function PaginaUsuarios() {
 
   function manejarGuardado(mensaje: string) {
     setEnEdicion(null);
+    mostrarAlerta('exito', mensaje);
+    listado.recargar();
+  }
+
+  function manejarCreado(mensaje: string) {
+    setCreando(false);
     mostrarAlerta('exito', mensaje);
     listado.recargar();
   }
@@ -172,9 +180,14 @@ export default function PaginaUsuarios() {
                   <button
                     type="button"
                     onClick={() => setADesactivar(u)}
-                    title="Desactivar usuario"
+                    disabled={usuarioActual?.id_usuario === u.id_usuario}
+                    title={
+                      usuarioActual?.id_usuario === u.id_usuario
+                        ? 'No puedes desactivar tu propia cuenta'
+                        : 'Desactivar usuario'
+                    }
                     aria-label={`Desactivar ${u.correo}`}
-                    className="rounded-lg px-2 py-1 text-xs font-semibold text-danger-700 transition-colors hover:bg-danger-50"
+                    className="rounded-lg px-2 py-1 text-xs font-semibold text-danger-700 transition-colors hover:bg-danger-50 disabled:cursor-not-allowed disabled:opacity-40"
                   >
                     Desactivar
                   </button>
@@ -187,7 +200,7 @@ export default function PaginaUsuarios() {
                     disabled={procesando}
                     className="rounded-lg px-2 py-1 text-xs font-semibold text-success-700 transition-colors hover:bg-success-50 disabled:opacity-50"
                   >
-                    Reactivar
+                    Activar
                   </button>
                 )}
 
@@ -212,6 +225,12 @@ export default function PaginaUsuarios() {
         >
           {alerta.mensaje}
         </Alerta>
+      )}
+
+      {esAdmin && (
+        <div className="flex justify-end">
+          <Button onClick={() => setCreando(true)}>+ Crear usuario</Button>
+        </div>
       )}
 
       {/* Búsqueda */}
@@ -258,6 +277,14 @@ export default function PaginaUsuarios() {
       </section>
 
       {/* Modal de edición */}
+      {creando && (
+        <ModalCrearUsuario
+          instituciones={instituciones}
+          onCerrar={() => setCreando(false)}
+          onCreado={manejarCreado}
+        />
+      )}
+
       {enEdicion && (
         <ModalEditarUsuario
           usuario={enEdicion}
