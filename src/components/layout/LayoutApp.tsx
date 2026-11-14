@@ -1,19 +1,24 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 
 import { useAuth } from '@/hooks/useAuth';
 import type { Rol } from '@/types';
 import { cx } from '@/components/ui/cx';
 import {
+  IconoCoach,
   IconoContacto,
   IconoDashboard,
   IconoHistorial,
+  IconoIncidente,
   IconoInstitucion,
   IconoMenu,
+  IconoMonitoreo,
   IconoOjo,
+  IconoReporte,
   IconoSalir,
   IconoUsuarios,
   type ComponenteIcono,
+  type IconoProps,
 } from '@/components/ui/Iconos';
 
 /**
@@ -39,7 +44,7 @@ interface ItemMenu {
   roles: Rol[];
 }
 
-/** Menú del Sprint 1 — se ampliará en Sprints 2-3 */
+/** Menú — Sprint 3 (CU27–CU40) */
 const ITEMS_MENU: ItemMenu[] = [
   {
     ruta: '/dashboard',
@@ -76,6 +81,37 @@ const ITEMS_MENU: ItemMenu[] = [
     etiqueta: 'Historial',
     icono: IconoHistorial,
     roles: ['ADMIN', 'INSTITUCION', 'USUARIO'],
+  },
+  // ─── Sprint 3 ───
+  {
+    ruta: '/incidencias',
+    etiqueta: 'Incidencias',
+    icono: IconoIncidente,
+    roles: ['ADMIN', 'INSTITUCION'],
+  },
+  {
+    ruta: '/visioncoach',
+    etiqueta: 'VisionCoach',
+    icono: IconoCoach,
+    roles: ['ADMIN', 'INSTITUCION', 'USUARIO'],
+  },
+  {
+    ruta: '/reportes',
+    etiqueta: 'Reportes',
+    icono: IconoReporte,
+    roles: ['ADMIN', 'INSTITUCION'],
+  },
+  {
+    ruta: '/monitoreo',
+    etiqueta: 'Monitoreo IA',
+    icono: IconoMonitoreo,
+    roles: ['ADMIN', 'INSTITUCION'],
+  },
+  {
+    ruta: '/ubicaciones',
+    etiqueta: 'Ubicaciones (CU21)',
+    icono: IconoUbicacion,
+    roles: ['ADMIN', 'INSTITUCION'],
   },
 ];
 
@@ -166,7 +202,7 @@ export default function LayoutApp() {
         {/* Pie del sidebar */}
         <div className="border-t border-slate-800 p-4">
           <p className="text-xs text-slate-500">
-            VisionCare AI · Sprint 1 · v0.1.0
+            VisionCare AI · Sprint 3 · v0.3.0
           </p>
         </div>
       </aside>
@@ -243,4 +279,33 @@ export default function LayoutApp() {
 /** Primera letra del nombre (o del correo) para el avatar */
 function inicialNombre(nombre: string): string {
   return nombre.charAt(0).toUpperCase();
+}
+
+/**
+ * 🆕 CU21 — icono de pin de ubicación (definido aquí para no
+ * tocar Iconos.tsx al reemplazar este archivo).
+ */
+function IconoUbicacion(props: IconoProps): ReactNode {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      strokeWidth={1.8}
+      stroke="currentColor"
+      aria-hidden="true"
+      {...props}
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+      />
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"
+      />
+    </svg>
+  );
 }
